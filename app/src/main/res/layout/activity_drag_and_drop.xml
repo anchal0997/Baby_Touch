@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anchalgarg.babytouch.DragAndDropActivity">
+
+    <ImageButton
+        android:id="@+id/image1"
+        android:layout_width="82dp"
+        android:layout_height="83dp"
+        android:layout_alignLeft="@+id/target1"
+        android:layout_alignStart="@+id/target1"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="19dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/red__ball"
+        tools:layout_editor_absoluteX="76dp"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="260sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+
+        app:srcCompat="@android:color/holo_red_light" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:allowUndo="true"
+        android:text="Tap"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp" />
+
+    <TextView
+        android:id="@+id/stopWatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:text="00:00"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/strtStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="29dp"
+        android:layout_marginStart="29dp"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_toRightOf="@+id/textView"
+        android:background="@drawable/btn_green"
+        android:text="Start" />
+
+    <Button
+        android:id="@+id/menuBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/stopWatch"
+        android:layout_toStartOf="@+id/stopWatch"
+        android:background="@drawable/btn_green"
+        android:text="Menu" />
+
+    <ImageButton
+        android:id="@+id/image2"
+        android:layout_width="82sp"
+        android:layout_height="83sp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/star"
+        android:layout_below="@+id/image1"
+        android:layout_toRightOf="@+id/image1"
+        android:layout_toEndOf="@+id/image1" />
+
+    <ImageButton
+        android:id="@+id/target2"
+        android:layout_width="82sp"
+        android:layout_height="83sp"
+        android:layout_marginTop="34dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/white_star"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toLeftOf="@+id/image3"
+        android:layout_toStartOf="@+id/image3" />
+
+    <ImageButton
+        android:id="@+id/image3"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignTop="@+id/image1"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/image2"
+        android:layout_toRightOf="@+id/image2"
+        app:srcCompat="@drawable/rect_red" />
+
+    <ImageButton
+        android:id="@+id/image4"
+        android:layout_width="90sp"
+        android:layout_height="90sp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/tri_red"
+        android:layout_alignBottom="@+id/image2"
+        android:layout_alignRight="@+id/stopWatch"
+        android:layout_alignEnd="@+id/stopWatch" />
+
+    <ImageButton
+        android:id="@+id/target3"
+        android:layout_width="65sp"
+        android:layout_height="65sp"
+        android:layout_alignBottom="@+id/target1"
+        android:layout_alignLeft="@+id/menuBtn"
+        android:layout_alignStart="@+id/menuBtn"
+        app:srcCompat="@drawable/tri_white" />
+
+    <ImageButton
+        android:id="@+id/target1"
+        android:layout_width="70dp"
+        android:layout_height="83dp"
+        android:layout_above="@+id/strtStop"
+        android:layout_below="@+id/target2"
+        android:layout_marginBottom="23dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/white_ball"
+        app:srcCompat="@drawable/white_ball"
+        tools:layout_editor_absoluteX="162dp"
+        tools:layout_editor_absoluteY="301dp" />
+
+    <ImageButton
+        android:id="@+id/target4"
+        android:layout_width="70sp"
+        android:layout_height="70sp"
+        android:layout_alignEnd="@+id/image4"
+        android:layout_alignRight="@+id/image4"
+        android:layout_alignTop="@+id/target2"
+        android:background="@android:color/white"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/white_tria" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+    </FrameLayout>
+
+
+</RelativeLayout>
