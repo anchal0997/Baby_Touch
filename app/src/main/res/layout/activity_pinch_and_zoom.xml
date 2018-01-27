@@ -9,12 +9,12 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="260sp"
+        android:layout_height="300sp"
 
-        app:srcCompat="@android:color/holo_red_light"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        app:srcCompat="@android:color/holo_red_light" />
 
     <TextView
         android:id="@+id/stopWatch"
@@ -56,10 +56,10 @@
 
     <ImageButton
         android:id="@+id/target2"
-        android:layout_width="90sp"
-        android:layout_height="90sp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
         android:layout_marginLeft="50sp"
-        android:layout_marginTop="260sp"
+        android:layout_marginTop="220sp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/white_star"
 
@@ -68,26 +68,26 @@
 
     <ImageButton
         android:id="@+id/target3"
-        android:layout_width="80sp"
-        android:layout_height="80sp"
-        android:layout_marginLeft="200sp"
-        android:layout_marginTop="260sp"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_marginLeft="100sp"
+        android:layout_marginTop="360sp"
         app:srcCompat="@drawable/tri_white" />
 
     <ImageButton
         android:id="@+id/target1"
-        android:layout_width="70sp"
-        android:layout_height="70sp"
-        android:layout_marginLeft="50sp"
-        android:layout_marginTop="360sp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginLeft="200sp"
+        android:layout_marginTop="230sp"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/white_ball" />
 
     <ImageButton
         android:id="@+id/target4"
-        android:layout_width="70sp"
-        android:layout_height="70sp"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
         android:layout_marginLeft="200sp"
         android:layout_marginTop="360sp"
         android:background="@android:color/white"
@@ -97,44 +97,46 @@
 
     <ImageButton
         android:id="@+id/image1"
-        android:layout_width="82sp"
-        android:layout_height="83sp"
+        android:layout_width="52sp"
+        android:layout_height="53sp"
         android:layout_marginTop="39sp"
+        android:layout_marginLeft="20sp"
+
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/red__ball"
-        tools:layout_editor_absoluteX="76sp"
-        tools:layout_editor_absoluteY="80sp"
+
         />
 
     <ImageButton
         android:id="@+id/image2"
-        android:layout_width="82sp"
-        android:layout_height="83sp"
+        android:layout_width="62sp"
+        android:layout_height="63sp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/star"
-        android:layout_marginTop="160sp"
+        android:layout_marginTop="130sp"
+        android:layout_marginLeft="20sp"
+
         tools:layout_editor_absoluteX="76sp"
         tools:layout_editor_absoluteY="200sp"
         />
 
     <ImageButton
         android:id="@+id/image4"
-        android:layout_width="90sp"
-        android:layout_height="90sp"
+        android:layout_width="120sp"
+        android:layout_height="120sp"
+        android:layout_marginLeft="100sp"
+        android:layout_marginTop="40sp"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/tri_red"
-        android:layout_marginLeft="180sp"
-        android:layout_marginTop = "140sp"
-        />
+        app:srcCompat="@drawable/tri_red" />
 
     <ImageButton
         android:id="@+id/image3"
-        android:layout_width="65sp"
-        android:layout_height="65sp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginLeft="240sp"
+        android:layout_marginTop="45sp"
         app:srcCompat="@drawable/rect_red"
-        android:layout_marginLeft="160sp"
-        android:layout_marginTop="40sp"
 
 
         />

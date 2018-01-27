@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +37,11 @@ public class TapOnMovingActivity extends AppCompatActivity {
     int min,secs;
     long timeSwap=0L;
     TextView mStopWatch;
+    WinningFragment frag = new WinningFragment();
+    FrameLayout fr ;
+    FragmentManager mananger;
+    FragmentTransaction trans;
+    int[] m = {0};
     MediaPlayer mTimeUp=new MediaPlayer();
     MediaPlayer mYipee=new MediaPlayer();
     long updateTime=0L;
@@ -67,7 +75,8 @@ public class TapOnMovingActivity extends AppCompatActivity {
         mTimeUp=MediaPlayer.create(TapOnMovingActivity.this,R.raw.timeup);
         mYipee=MediaPlayer.create(TapOnMovingActivity.this,R.raw.cheer);
         mStartStop=(Button)findViewById(R.id.strtStop);
-        final int[] m = {0};
+        mananger=getSupportFragmentManager();
+        fr = (FrameLayout) findViewById(R.id.fragment_container);
 
         mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,9 +100,14 @@ public class TapOnMovingActivity extends AppCompatActivity {
                             Log.d("JOO",""+m[0]);
                             if(m[0] ==4)
                             {
-                                Log.d("JAY",""+"----");
-                                m[0]=0;
+                                trans = mananger.beginTransaction();
+                                trans.add(R.id.fragment_container, frag);
+                                trans.commit();
                                 mYipee.start();
+                                mStartStop.setVisibility(View.INVISIBLE);
+                                mMenu.setVisibility(View.INVISIBLE);
+                                Log.d("uuu","-----------");
+
                             }
                         }
                     });
@@ -106,9 +120,14 @@ public class TapOnMovingActivity extends AppCompatActivity {
                             Log.d("JOO",""+m[0]);
                             if(m[0] ==4)
                             {
-                                Log.d("JAY",""+"----");
-                                m[0]=0;
+                                trans = mananger.beginTransaction();
+                                trans.add(R.id.fragment_container, frag);
+                                trans.commit();
                                 mYipee.start();
+                                mStartStop.setVisibility(View.INVISIBLE);
+                                mMenu.setVisibility(View.INVISIBLE);
+                                Log.d("uuu","-----------");
+
                             }
                         }
                     });
@@ -121,9 +140,14 @@ public class TapOnMovingActivity extends AppCompatActivity {
                             mRedBall2.setVisibility(View.INVISIBLE);
                             if(m[0] ==4)
                             {
-                                Log.d("JAY",""+"----");
-                                m[0]=0;
+                                trans = mananger.beginTransaction();
+                                trans.add(R.id.fragment_container, frag);
+                                trans.commit();
                                 mYipee.start();
+                                mStartStop.setVisibility(View.INVISIBLE);
+                                mMenu.setVisibility(View.INVISIBLE);
+                                Log.d("uuu","-----------");
+
                             }
                         }
                     });
@@ -136,9 +160,14 @@ public class TapOnMovingActivity extends AppCompatActivity {
                             Log.d("JOO",""+m[0]);
                             if(m[0] ==4)
                             {
-                                Log.d("JAY",""+"----");
+                                trans = mananger.beginTransaction();
+                                trans.add(R.id.fragment_container, frag);
+                                trans.commit();
                                 mYipee.start();
-                                m[0]=0;
+                                mStartStop.setVisibility(View.INVISIBLE);
+                                mMenu.setVisibility(View.INVISIBLE);
+                                Log.d("uuu","-----------");
+
                             }
                         }
                     });

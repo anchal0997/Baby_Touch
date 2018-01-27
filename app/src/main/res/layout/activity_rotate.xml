@@ -81,66 +81,55 @@
         android:id="@+id/target3"
         android:layout_width="65sp"
         android:layout_height="65sp"
-        android:layout_alignBottom="@+id/target1"
-        android:layout_alignLeft="@+id/menuBtn"
-        android:layout_alignStart="@+id/menuBtn"
         android:rotation="-40"
-        app:srcCompat="@drawable/tri_white" />
+        app:srcCompat="@drawable/tri_white"
+        android:layout_marginLeft="30sp"
+        android:layout_marginTop="400sp"/>
 
     <ImageButton
         android:id="@+id/target1"
         android:layout_width="70dp"
         android:layout_height="83dp"
-        android:layout_above="@+id/strtStop"
-        android:layout_below="@+id/target2"
-        android:layout_marginBottom="23dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
         android:background="@android:color/transparent"
         android:rotation="-50"
         android:scaleType="centerCrop"
         android:src="@drawable/white_ball"
         app:srcCompat="@drawable/white_ball"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="301dp" />
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="280sp"
+       />
 
     <ImageButton
         android:id="@+id/target4"
         android:layout_width="70sp"
         android:layout_height="70sp"
-        android:layout_alignEnd="@+id/image4"
-        android:layout_alignRight="@+id/image4"
-        android:layout_alignTop="@+id/target2"
         android:background="@android:color/white"
         android:rotation="40"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/white_tria" />
+        app:srcCompat="@drawable/white_tria"
+        android:layout_marginLeft="200sp"
+        android:layout_marginTop="370sp"/>
 
     <ImageButton
         android:id="@+id/target2"
         android:layout_width="82sp"
         android:layout_height="83sp"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_marginTop="34dp"
-        android:layout_toLeftOf="@+id/image3"
-        android:layout_toStartOf="@+id/image3"
         android:rotation="20"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/white_star" />
+        app:srcCompat="@drawable/white_star"
+        android:layout_marginLeft="220sp"
+        android:layout_marginTop="280sp"/>
 
     <ImageButton
         android:id="@+id/image1"
         android:layout_width="82dp"
         android:layout_height="83dp"
-        android:layout_alignLeft="@+id/target1"
-        android:layout_alignStart="@+id/target1"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="19dp"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/red__ball"
-        tools:layout_editor_absoluteX="76dp"
-        tools:layout_editor_absoluteY="80dp" />
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="50sp"
+   />
 
     <ImageButton
             android:id="@+id/image2"
@@ -148,9 +137,9 @@
             android:layout_height="83sp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/star"
-            android:layout_below="@+id/image1"
-            android:layout_toRightOf="@+id/image1"
-            android:layout_toEndOf="@+id/image1" />
+            android:layout_marginLeft="80sp"
+            android:layout_marginTop="140sp"
+           />
 
 
 
@@ -158,12 +147,9 @@
             android:id="@+id/image3"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_alignTop="@+id/image1"
-            android:layout_marginLeft="11dp"
-            android:layout_marginStart="11dp"
-            android:layout_toEndOf="@+id/image2"
-            android:layout_toRightOf="@+id/image2"
-            app:srcCompat="@drawable/rect_red" />
+            app:srcCompat="@drawable/rect_red"
+            android:layout_marginLeft="250sp"
+            android:layout_marginTop="65sp"/>
 
         <ImageButton
             android:id="@+id/image4"
@@ -171,9 +157,9 @@
             android:layout_height="90sp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/tri_red"
-            android:layout_alignBottom="@+id/image2"
-            android:layout_alignRight="@+id/stopWatch"
-            android:layout_alignEnd="@+id/stopWatch" />
+            android:layout_marginLeft="250sp"
+            android:layout_marginTop="140sp"
+            />
 
     <FrameLayout
         android:id="@+id/fragment_container"

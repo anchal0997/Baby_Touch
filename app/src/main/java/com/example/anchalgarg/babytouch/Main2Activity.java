@@ -58,7 +58,7 @@ public class Main2Activity extends AppCompatActivity {
                         startActivity(TapIntent5);
                         break;
                     case 6:
-                        Intent TapIntent6=new Intent(Main2Activity.this,pratice.class);
+                        Intent TapIntent6=new Intent(Main2Activity.this,RotateActivity.class);
                         TapIntent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(TapIntent6);
                         break;

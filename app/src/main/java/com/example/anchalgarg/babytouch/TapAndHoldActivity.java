@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import pl.droidsonroids.gif.GifImageButton;
@@ -28,6 +31,11 @@ public class TapAndHoldActivity extends AppCompatActivity {
     long starttime=0L;
     long time=0L;
     int min,secs;
+    WinningFragment frag = new WinningFragment();
+    FrameLayout fr ;
+    FragmentManager mananger;
+    FragmentTransaction trans;
+    int[] m = {0};
 
     long timeSwap=0L;
     MediaPlayer mTimeUp=new MediaPlayer();
@@ -46,14 +54,16 @@ public class TapAndHoldActivity extends AppCompatActivity {
             customHandler.postDelayed(this,0);
             if(min>=3)
             {
-
-                mTimeUp.start();
+                if(m[0]!=4)
+                {
+                    mTimeUp.start();
                 mStartStop.setText("START");
                 t=0;
                 mMenu.setVisibility(View.VISIBLE);
                 time=0;
                 timeSwap+=time;
                 customHandler.removeCallbacks(updateTimerThred);
+                }
 
             }
         }
@@ -78,9 +88,12 @@ public class TapAndHoldActivity extends AppCompatActivity {
         mStartStop=(Button)findViewById(R.id.strtStop);
         mMenu=(Button)findViewById(R.id.menuBtn);
         mStopWatch=(TextView)findViewById(R.id.stopWatch);
-        final int[] m = {0};
+
 
         mediaPlayer=new MediaPlayer();
+
+        mananger=getSupportFragmentManager();
+        fr = (FrameLayout) findViewById(R.id.fragment_container);
 
         mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +131,16 @@ public class TapAndHoldActivity extends AppCompatActivity {
                                         mediaPlayer = MediaPlayer.create(TapAndHoldActivity.this, R.raw.pop);
                                         mediaPlayer.start();
                                     }
+                                    if(m[0] ==4)
+                                    {
+                                        trans = mananger.beginTransaction();
+                                        trans.add(R.id.fragment_container, frag);
+                                        trans.commit();
+                                        mStartStop.setVisibility(View.INVISIBLE);
+                                        mMenu.setVisibility(View.INVISIBLE);
+                                        Log.d("uuu","-----------");
+
+                                    }
                                     break;
 
                             }
@@ -148,6 +171,16 @@ public class TapAndHoldActivity extends AppCompatActivity {
                                         m[0]++;
                                         mediaPlayer = MediaPlayer.create(TapAndHoldActivity.this, R.raw.pop);
                                         mediaPlayer.start();
+                                    }
+                                    if(m[0] ==4)
+                                    {
+                                        trans = mananger.beginTransaction();
+                                        trans.add(R.id.fragment_container, frag);
+                                        trans.commit();
+                                        mStartStop.setVisibility(View.INVISIBLE);
+                                        mMenu.setVisibility(View.INVISIBLE);
+                                        Log.d("uuu","-----------");
+
                                     }
                                     break;
 
@@ -180,6 +213,16 @@ public class TapAndHoldActivity extends AppCompatActivity {
                                         mediaPlayer = MediaPlayer.create(TapAndHoldActivity.this, R.raw.pop);
                                         mediaPlayer.start();
                                     }
+                                    if(m[0] ==4)
+                                    {
+                                        trans = mananger.beginTransaction();
+                                        trans.add(R.id.fragment_container, frag);
+                                        trans.commit();
+                                        mStartStop.setVisibility(View.INVISIBLE);
+                                        mMenu.setVisibility(View.INVISIBLE);
+                                        Log.d("uuu","-----------");
+
+                                    }
                                     break;
 
                             }
@@ -211,17 +254,36 @@ public class TapAndHoldActivity extends AppCompatActivity {
                                         mediaPlayer = MediaPlayer.create(TapAndHoldActivity.this, R.raw.pop);
                                         mediaPlayer.start();
                                     }
+
+                                if(m[0] ==4)
+                                {
+                                    trans = mananger.beginTransaction();
+                                    trans.add(R.id.fragment_container, frag);
+                                    trans.commit();
+                                    mStartStop.setVisibility(View.INVISIBLE);
+                                    mMenu.setVisibility(View.INVISIBLE);
+                                    Log.d("uuu","-----------");
+
+                                }
                                     break;
 
                             }
+
                             return false;
+
                         }
                     });
 
 
                     if(m[0] ==4)
                     {
+                        trans = mananger.beginTransaction();
+                        trans.add(R.id.fragment_container, frag);
+                        trans.commit();
+                        mStartStop.setVisibility(View.INVISIBLE);
+                        mMenu.setVisibility(View.INVISIBLE);
                         Log.d("uuu","-----------");
+
                     }
                     mStartStop.setText("STOP");
                     mMenu.setVisibility(View.INVISIBLE);

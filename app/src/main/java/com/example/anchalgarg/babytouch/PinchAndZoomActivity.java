@@ -1,25 +1,24 @@
 package com.example.anchalgarg.babytouch;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.BoolRes;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,6 +34,7 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
 
     ImageButton mred_ball;
     ImageButton mCon;
+    Boolean x1=false,x2=false,x3=false,x4=false;
 
     ImageButton mDrag1;
     ImageButton mDrop1;
@@ -45,7 +45,10 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
     ImageButton mDrag4;
     ImageButton mDrop4;
     Button mMenu;
-    final int[] m = {0};
+    WinningFragment frag = new WinningFragment();
+    FrameLayout fr ;
+    FragmentManager mananger;
+    FragmentTransaction trans;
     Button mStartStop;
     long starttime=0L;
     long time=0L;
@@ -67,6 +70,7 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
     private float d = 0f;
     private float newRot = 0f;
     public int t=0;
+    int[] m = {0};
 
     TextView mStopWatch;
     final Handler customHandler=new Handler();
@@ -102,7 +106,8 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
 
         mTimeUp=MediaPlayer.create(PinchAndZoomActivity.this,R.raw.timeup);
         mStartStop=(Button)findViewById(R.id.strtStop);
-
+        mananger=getSupportFragmentManager();
+        fr = (FrameLayout) findViewById(R.id.fragment_container);
 
         mtada=MediaPlayer.create(PinchAndZoomActivity.this,R.raw.tada);
         mStopWatch=(TextView)findViewById(R.id.stopWatch);
@@ -203,8 +208,19 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                                 float scale = newDist / oldDist * view.getScaleX();
                                                 if (scale > 0.6) {
                                                     scalediff = scale;
-                                                    view.setScaleX(scale);
-                                                    view.setScaleY(scale);
+                                                    Log.d("bhavya",scale+"");
+                                                   if(scale>=2.5&&scale<=3&&x1!=true)
+                                                    {
+                                                        Log.d("555","855");
+                                                        x1=true;
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
+                                                    if(x1!=true)
+                                                    {
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
 
                                                 }
                                             }
@@ -312,8 +328,18 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                                 float scale = newDist / oldDist * view.getScaleX();
                                                 if (scale > 0.6) {
                                                     scalediff = scale;
-                                                    view.setScaleX(scale);
-                                                    view.setScaleY(scale);
+                                                    if(scale>=2.5&&scale<=3&&x2!=true)
+                                                    {
+                                                        Log.d("555","855");
+                                                        x2=true;
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
+                                                    if(x2!=true)
+                                                    {
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
 
                                                 }
                                             }
@@ -415,10 +441,20 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                             float newDist = spacing(event);
                                             if (newDist > 10f) {
                                                 float scale = newDist / oldDist * view.getScaleX();
-                                                if (scale > 0.6) {
+                                                if (scale > 0) {
                                                     scalediff = scale;
-                                                    view.setScaleX(scale);
-                                                    view.setScaleY(scale);
+                                                    if(scale>=0.2&&scale<=0.5&&x4!=true)
+                                                    {
+                                                        Log.d("555","855");
+                                                        x4=true;
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
+                                                    if(x4!=true)
+                                                    {
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
 
                                                 }
                                             }
@@ -520,10 +556,20 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                             float newDist = spacing(event);
                                             if (newDist > 10f) {
                                                 float scale = newDist / oldDist * view.getScaleX();
-                                                if (scale > 0.6) {
+                                                if (scale > 0) {
                                                     scalediff = scale;
-                                                    view.setScaleX(scale);
-                                                    view.setScaleY(scale);
+                                                    if(scale>=0.2&&scale<=0.5&&x3!=true)
+                                                    {
+                                                        Log.d("555","855");
+                                                        x3=true;
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
+                                                    if(x3!=true)
+                                                    {
+                                                        view.setScaleX(scale);
+                                                        view.setScaleY(scale);
+                                                    }
 
                                                 }
                                             }
@@ -542,7 +588,6 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                             parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
                                             view.setLayoutParams(parms);
-
 
                                         }
                                     }

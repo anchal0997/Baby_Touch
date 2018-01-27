@@ -36,12 +36,5 @@
         android:layout_marginTop="26dp"
         android:background="@android:color/transparent" />
 
-    <ImageButton
-        android:id="@+id/red_ball"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/playBtn"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/playBtn"
-        app:srcCompat="@drawable/red__ball" />
+
 </RelativeLayout>

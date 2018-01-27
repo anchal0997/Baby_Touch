@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
     private Button mAbout;
     RelativeLayout mRelativeLayout;
     Animation animationzoom;
-    ImageButton mredBall;
+   // ImageButton mredBall;
 
 
     @Override
@@ -34,16 +34,16 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
         mPlay=(Button)findViewById(R.id.playBtn);
         mOption=(Button)findViewById(R.id.options);
         mAbout=(Button)findViewById(R.id.abtBtn);
-        mredBall=(ImageButton) findViewById(R.id.red_ball);
+       // mredBall=(ImageButton) findViewById(R.id.red_ball);
         animationzoom=  AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
 
-        mredBall.setOnClickListener(new View.OnClickListener() {
+      /*  mredBall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mredBall.startAnimation(animationzoom);
             }
         });
-
+*/
 
         mRelativeLayout=(RelativeLayout)findViewById(R.id.relativeLayout);
         mPlay.setOnClickListener(new View.OnClickListener() {

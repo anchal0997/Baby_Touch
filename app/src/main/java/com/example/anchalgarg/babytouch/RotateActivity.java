@@ -63,7 +63,7 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pinch_and_zoom);
+        setContentView(R.layout.activity_rotate);
         mDrag1=(ImageButton)findViewById(R.id.image1);
         mDrop1=(ImageButton)findViewById(R.id.target1);
         mDrag2=(ImageButton)findViewById(R.id.image2);
@@ -148,24 +148,24 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                float newDist = spacing(event);
-                                if (newDist > 10f) {
-                                    float scale = newDist / oldDist * view.getScaleX();
-                                    if (scale > 0.6) {
-                                        scalediff = scale;
-                                        view.setScaleX(scale);
-                                        view.setScaleY(scale);
-
-                                    }
-                                }
+//                                float newDist = spacing(event);
+//                                if (newDist > 10f) {
+//                                    float scale = newDist / oldDist * view.getScaleX();
+//                                    if (scale > 0.6) {
+//                                        scalediff = scale;
+//                                        view.setScaleX(scale);
+//                                        view.setScaleY(scale);
+//
+//                                    }
+//                                }
 
                                   view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx) + scalediff);
-                                parms.topMargin = (int) ((y - dy) + scalediff);
+                                parms.leftMargin = (int) ((x - dx));// + scalediff
+                                parms.topMargin = (int) ((y - dy));
 
                                 parms.rightMargin = 0;
                                 parms.bottomMargin = 0;
@@ -257,24 +257,24 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                float newDist = spacing(event);
-                                if (newDist > 10f) {
-                                    float scale = newDist / oldDist * view.getScaleX();
-                                    if (scale > 0.6) {
-                                        scalediff = scale;
-                                        view.setScaleX(scale);
-                                        view.setScaleY(scale);
-
-                                    }
-                                }
+//                                float newDist = spacing(event);
+//                                if (newDist > 10f) {
+//                                    float scale = newDist / oldDist * view.getScaleX();
+//                                    if (scale > 0.6) {
+//                                        scalediff = scale;
+//                                        view.setScaleX(scale);
+//                                        view.setScaleY(scale);
+//
+//                                    }
+//                                }
 
                                 view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx) + scalediff);
-                                parms.topMargin = (int) ((y - dy) + scalediff);
+                                parms.leftMargin = (int) ((x - dx) );
+                                parms.topMargin = (int) ((y - dy) );
 
                                 parms.rightMargin = 0;
                                 parms.bottomMargin = 0;
@@ -362,24 +362,24 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                float newDist = spacing(event);
-                                if (newDist > 10f) {
-                                    float scale = newDist / oldDist * view.getScaleX();
-                                    if (scale > 0.6) {
-                                        scalediff = scale;
-                                        view.setScaleX(scale);
-                                        view.setScaleY(scale);
-
-                                    }
-                                }
+//                                float newDist = spacing(event);
+//                                if (newDist > 10f) {
+//                                    float scale = newDist / oldDist * view.getScaleX();
+//                                    if (scale > 0.6) {
+//                                        scalediff = scale;
+//                                        view.setScaleX(scale);
+//                                        view.setScaleY(scale);
+//
+//                                    }
+//                                }
 
                                 view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx) + scalediff);
-                                parms.topMargin = (int) ((y - dy) + scalediff);
+                                parms.leftMargin = (int) ((x - dx) );
+                                parms.topMargin = (int) ((y - dy) );
 
                                 parms.rightMargin = 0;
                                 parms.bottomMargin = 0;
@@ -467,24 +467,24 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                float newDist = spacing(event);
-                                if (newDist > 10f) {
-                                    float scale = newDist / oldDist * view.getScaleX();
-                                    if (scale > 0.6) {
-                                        scalediff = scale;
-                                        view.setScaleX(scale);
-                                        view.setScaleY(scale);
-
-                                    }
-                                }
+//                                float newDist = spacing(event);
+//                                if (newDist > 10f) {
+//                                    float scale = newDist / oldDist * view.getScaleX();
+//                                    if (scale > 0.6) {
+//                                        scalediff = scale;
+//                                        view.setScaleX(scale);
+//                                        view.setScaleY(scale);
+//
+//                                    }
+//                                }
 
                                  view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
                                 x = event.getRawX();
                                 y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx) + scalediff);
-                                parms.topMargin = (int) ((y - dy) + scalediff);
+                                parms.leftMargin = (int) ((x - dx));
+                                parms.topMargin = (int) ((y - dy));
 
                                 parms.rightMargin = 0;
                                 parms.bottomMargin = 0;
