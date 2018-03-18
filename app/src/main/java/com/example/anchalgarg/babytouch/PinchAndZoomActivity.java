@@ -72,11 +72,13 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
     public int t=0;
     int[] m = {0};
 
+    Boolean[] flags = {false,false,false,false,false,false,false,false};
     TextView mStopWatch;
     final Handler customHandler=new Handler();
     Runnable updateTimerThred=new Runnable() {
         @Override
         public void run() {
+
             time= SystemClock.uptimeMillis()-starttime;
             updateTime=timeSwap+time;
             secs=(int)(updateTime/1000);
@@ -127,12 +129,50 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
         layoutParams.topMargin = 50;
         layoutParams.bottomMargin = -250;
         layoutParams.rightMargin = -250;
+        final int[][] positions=new int[4][4];
+
+        positions[0][0]=mDrop1.getLeft();
+        positions[0][1]=mDrop1.getTop();
+        positions[0][2]=mDrop1.getWidth()+positions[0][0];
+        positions[0][3]=mDrop1.getBottom();
+        positions[1][0]=mDrop2.getLeft();
+        positions[1][1]=mDrop2.getTop();
+        positions[1][2]=mDrop2.getRight();
+        positions[1][3]=mDrop2.getBottom();
+        positions[2][0]=mDrop3.getLeft();
+        positions[2][1]=mDrop3.getTop();
+        positions[2][2]=mDrop3.getRight();
+        positions[2][3]=mDrop3.getBottom();
+        positions[3][0]=mDrop4.getLeft();
+        positions[3][1]=mDrop4.getTop();
+        positions[3][2]=mDrop4.getRight();
+        positions[3][3]=mDrop4.getBottom();
+        Log.d("YAYA","p"+positions[0][0]+positions[0][1]+"  "+positions[0][2]);
+
+        //int positions[4][2]={mDrop1.getLeft(),mDrop1.getTop()};
 
         mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(t==0)
                 {
+                    positions[0][0]=mDrop1.getLeft();
+                    positions[0][1]=mDrop1.getTop();
+                    positions[0][2]=mDrop1.getWidth()+positions[0][0];
+                    positions[0][3]=mDrop1.getHeight()+positions[0][1];
+                    positions[1][0]=mDrop2.getLeft();
+                    positions[1][1]=mDrop2.getTop();
+                    positions[1][2]=mDrop2.getWidth()+positions[1][0];
+                    positions[1][3]=mDrop2.getHeight()+positions[1][1];
+                    positions[2][0]=mDrop3.getLeft();
+                    positions[2][1]=mDrop3.getTop();
+                    positions[2][2]=mDrop3.getWidth()+positions[2][0];
+                    positions[2][3]=mDrop3.getHeight()+positions[2][1];
+                    positions[3][0]=mDrop4.getLeft();
+                    positions[3][1]=mDrop4.getTop();
+                    positions[3][2]=mDrop4.getWidth()+positions[3][0];
+                    positions[3][3]=mDrop4.getHeight()+positions[3][1];
+                    Log.d("YAYA-1","p"+positions[0][0]+positions[0][1]+"  "+positions[0][2]);
                     im_move_zoom_rotate=(ImageView)findViewById(R.id.image1);
                     // im_move_zoom_rotate.setLayoutParams(layoutParams);
                     im_move_zoom_rotate.setOnTouchListener(new View.OnTouchListener() {
@@ -178,9 +218,27 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                     break;
                                 case MotionEvent.ACTION_MOVE:
                                     if (mode == DRAG) {
-
+                                        Log.d("checking","still dragging");
                                         x = event.getRawX();
                                         y = event.getRawY();
+                                        Log.d("ABAAO",""+x+" "+y);
+                                        if(x>=positions[0][0]&&y>=positions[0][1]&&x<=positions[0][2]&&y<=positions[0][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            //mDrop1.setImageResource(R.drawable.red__ball);
+                                            //mDrop1.setLayoutParams(
+                                            //        new RelativeLayout.LayoutParams(mDrag1.getLayoutParams()));
+                                            //mDrop1.setVisibility(View.INVISIBLE);
+                                            flags[0] = true;
+                                            float x = mDrop1.getX();
+                                            float y= mDrop1.getY();
+                                            check();
+                                            m[0]++;
+                                        }else{
+                                            Log.d("still_checking","working");
+                                            flags[0]= false;
+                                        }
+
 
                                         parms.leftMargin = (int) (x - dx);
                                         parms.topMargin = (int) (y - dy);
@@ -191,6 +249,16 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                         parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
                                         view.setLayoutParams(parms);
+
+                                       //   final View view1  = im_move_zoom_rotate;
+                                      //  final  View view1=(View) event.getLocalState();
+//                                        if(v.getId()==R.id.target1&&t==1)
+//                                        {
+//                                            Log.d("draged","___---");
+//                                            mDrag1.setVisibility(View.INVISIBLE);
+//                                            m[0]++;
+//                                            mDrop1.setImageResource(R.drawable.red__ball);
+//                                        }
 
                                     } else if (mode == ZOOM) {
 
@@ -215,6 +283,8 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                                         x1=true;
                                                         view.setScaleX(scale);
                                                         view.setScaleY(scale);
+                                                        flags[1] = true;
+                                                        //check();
                                                     }
                                                     if(x1!=true)
                                                     {
@@ -301,6 +371,15 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
 
                                         x = event.getRawX();
                                         y = event.getRawY();
+                                        if(x>=positions[1][0]&&y>=positions[1][1]&&x<=positions[1][2]&&y<=positions[1][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            flags[2] = true;
+                                            check();
+
+                                        }else{
+                                            flags[2]= false;
+                                        }
 
                                         parms.leftMargin = (int) (x - dx);
                                         parms.topMargin = (int) (y - dy);
@@ -334,6 +413,8 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                                         x2=true;
                                                         view.setScaleX(scale);
                                                         view.setScaleY(scale);
+                                                        flags[3] = true;
+                                                        check();
                                                     }
                                                     if(x2!=true)
                                                     {
@@ -416,6 +497,17 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
 
                                         x = event.getRawX();
                                         y = event.getRawY();
+                                        if(x>=positions[3][0] -10 &&y>=positions[3][1] && x<= 10 + positions[3][2]  &&y<= positions[3][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            flags[6] = true;
+                                            Log.d("2_inside","inside  " + flags[7]);
+                                            check();
+                                            m[0]++;
+                                        }else{
+                                            Log.d("2_outside","outside  " + flags[7]);
+                                            flags[6]= false;
+                                        }
 
                                         parms.leftMargin = (int) (x - dx);
                                         parms.topMargin = (int) (y - dy);
@@ -443,12 +535,15 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                                 float scale = newDist / oldDist * view.getScaleX();
                                                 if (scale > 0) {
                                                     scalediff = scale;
-                                                    if(scale>=0.2&&scale<=0.5&&x4!=true)
+                                                    if(scale>=0.1&&scale<=0.6&&x4!=true)
                                                     {
                                                         Log.d("555","855");
                                                         x4=true;
                                                         view.setScaleX(scale);
                                                         view.setScaleY(scale);
+                                                        flags[7] = true;
+                                                        Log.d("2_scaler","" + flags[6]);
+                                                        check();
                                                     }
                                                     if(x4!=true)
                                                     {
@@ -463,6 +558,7 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
 
                                             x = event.getRawX();
                                             y = event.getRawY();
+
 
                                             parms.leftMargin = (int) ((x - dx) + scalediff);
                                             parms.topMargin = (int) ((y - dy) + scalediff);
@@ -531,6 +627,19 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
 
                                         x = event.getRawX();
                                         y = event.getRawY();
+                                        Log.d("tri_pos",""+x+" "+y);
+                                        Log.d("tri_1",""+positions[3][0]+" "+positions[3][1]+" "+positions[3][2]+positions[3][3]);
+                                        if(x>=positions[2][0] -10 &&y>=positions[2][1]-10 &&x<=positions[2][2] +10 &&y<=10 + positions[2][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            flags[4] = true;
+                                            Log.d("3_inside","" + flags[4]);
+                                            check();
+                                            m[0]++;
+                                        }else{
+                                            Log.d("3_outside","" + flags[4]);
+                                            flags[4] = false;
+                                        }
 
                                         parms.leftMargin = (int) (x - dx);
                                         parms.topMargin = (int) (y - dy);
@@ -558,12 +667,15 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                                                 float scale = newDist / oldDist * view.getScaleX();
                                                 if (scale > 0) {
                                                     scalediff = scale;
-                                                    if(scale>=0.2&&scale<=0.5&&x3!=true)
+                                                    if(scale>=0.1&&scale<=0.6&&x3!=true)
                                                     {
                                                         Log.d("555","855");
                                                         x3=true;
                                                         view.setScaleX(scale);
                                                         view.setScaleY(scale);
+                                                        Log.d("3_scaler", "flags[4]");
+                                                        flags[5] = true;
+                                                        check();
                                                     }
                                                     if(x3!=true)
                                                     {
@@ -614,8 +726,8 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
                     mDrag2.setOnTouchListener(null);
                     mDrag3.setOnTouchListener(null);
                     mDrag4.setOnTouchListener(null);
-
                     mStartStop.setText("START");
+
                     t=0;
                     mMenu.setVisibility(View.VISIBLE);
                     time=0;
@@ -760,6 +872,59 @@ public class PinchAndZoomActivity extends AppCompatActivity implements View.OnTo
         return (float) Math.sqrt(x * x + y * y);
     }
 
+    private void check(){
+
+        if(flags[0] && flags[1]){
+
+           // myImgView.setImageDrawable(getResources().getDrawable(R.drawable.monkey, getApplicationContext().getTheme()));
+            mDrop1.setImageResource(R.drawable.red__ball);
+//            mDrag1.setLayoutParams(
+//                    new RelativeLayout.LayoutParams(mDrop1.getLayoutParams()));
+
+//            mDrop1.setLayoutParams(
+//                    new RelativeLayout.LayoutParams(mDrop1.getLayoutParams()));
+            //mDrop1.setX(x);
+            //mDrop1.setY(y);
+     //       mDrop1.setVisibility(View.INVISIBLE);
+            //mDrag1.setVisibility(View.INVISIBLE);
+            mDrag1.setOnTouchListener(null);
+            mDrag1.setVisibility(View.INVISIBLE);
+        }
+
+        if(flags[2] && flags[3]){
+            mDrop2.setImageResource(R.drawable.star);
+            mDrag2.setOnTouchListener(null);
+            mDrag2.setVisibility(View.INVISIBLE);
+        }
+
+        if(flags[4] && flags[5]){
+            mDrop3.setImageResource(R.drawable.rect_red);
+            mDrag3.setOnTouchListener(null);
+            mDrag3.setVisibility(View.INVISIBLE);
+        }
+
+        if(flags[6] && flags[7]){
+            mDrop4.setImageResource(R.drawable.tri_red);
+//            mDrop4.setLayoutParams(
+//                    new RelativeLayout.LayoutParams(mDrop4.getLayoutParams()));
+            Log.d("2_","should work");
+            mDrag4.setVisibility(View.INVISIBLE);
+            mDrag4.setOnTouchListener(null);
+        }
+        Boolean flag = true;
+        for(int i = 0;i<7;i++)
+            if(!flags[i])
+                flag = false;
+
+        if(flag){
+            trans = mananger.beginTransaction();
+            trans.add(R.id.fragment_container, frag);
+            trans.commit();
+            mStartStop.setVisibility(View.INVISIBLE);
+            mMenu.setVisibility(View.INVISIBLE);
+        }
+
+    }
 //    private float rotation(MotionEvent event) {
 //        double delta_x = (event.getX(0) - event.getX(1));
 //        double delta_y = (event.getY(0) - event.getY(1));

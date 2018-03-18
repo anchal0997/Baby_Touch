@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.anchalgarg.babytouch.PinchAndZoomActivity">
+    tools:context="com.example.anchalgarg.babytouch.PinchAndZoomEasy">
 
     <ImageView
         android:id="@+id/imageView"
@@ -58,55 +58,59 @@
         android:id="@+id/target2"
         android:layout_width="120sp"
         android:layout_height="120sp"
-        android:layout_marginLeft="50sp"
-        android:layout_marginTop="350sp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/white_star"
 
-        />
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/image2"
+        android:layout_alignStart="@+id/image2" />
 
 
     <ImageButton
         android:id="@+id/target3"
         android:layout_width="60sp"
         android:layout_height="60sp"
-        android:layout_marginLeft="100sp"
-        android:layout_marginTop="500sp"
-        app:srcCompat="@drawable/tri_white" />
+        app:srcCompat="@drawable/tri_white"
+        android:layout_below="@+id/target2"
+        android:layout_toRightOf="@+id/image2"
+        android:layout_toEndOf="@+id/image2"
+        android:layout_marginTop="34dp" />
 
     <ImageButton
         android:id="@+id/target1"
         android:layout_width="100sp"
         android:layout_height="100sp"
-        android:layout_marginLeft="200sp"
-        android:layout_marginTop="350sp"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
-        android:src="@drawable/white_ball" />
+        android:src="@drawable/white_ball"
+        android:layout_alignTop="@+id/target2"
+        android:layout_alignRight="@+id/menuBtn"
+        android:layout_alignEnd="@+id/menuBtn" />
 
     <ImageButton
         android:id="@+id/target4"
         android:layout_width="60sp"
         android:layout_height="60sp"
-        android:layout_marginLeft="200sp"
-        android:layout_marginTop="500sp"
         android:background="@android:color/white"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/white_tria" />
+        app:srcCompat="@drawable/white_tria"
+        android:layout_alignTop="@+id/target3"
+        android:layout_alignLeft="@+id/target1"
+        android:layout_alignStart="@+id/target1" />
 
 
     <ImageButton
         android:id="@+id/image1"
         android:layout_width="52sp"
         android:layout_height="53sp"
-        android:layout_marginTop="39sp"
-        android:layout_marginLeft="20sp"
 
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/red__ball"
 
-        />
+        android:layout_below="@+id/stopWatch"
+        android:layout_alignLeft="@+id/strtStop"
+        android:layout_alignStart="@+id/strtStop" />
 
     <ImageButton
         android:id="@+id/image2"
@@ -114,12 +118,12 @@
         android:layout_height="63sp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/star"
-        android:layout_marginTop="130sp"
-        android:layout_marginLeft="20sp"
 
         tools:layout_editor_absoluteX="76sp"
         tools:layout_editor_absoluteY="200sp"
-        />
+        android:layout_above="@+id/imageView"
+        android:layout_alignLeft="@+id/image1"
+        android:layout_alignStart="@+id/image1" />
 
     <ImageButton
         android:id="@+id/image4"
@@ -149,5 +153,7 @@
         android:layout_alignParentTop="true">
 
     </FrameLayout>
+
+
 
 </RelativeLayout>

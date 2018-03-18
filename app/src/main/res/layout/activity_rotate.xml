@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="260sp"
+            android:layout_height="350sp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
@@ -23,21 +23,21 @@
             app:srcCompat="@android:color/holo_red_light" />
 
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:allowUndo="true"
-            android:text="Tap"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="13dp"
-            android:layout_marginStart="13dp" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="14dp"
+        android:allowUndo="true"
+        android:text="Rotate and Drag"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
         <TextView
             android:id="@+id/stopWatch"
@@ -59,10 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="29dp"
-            android:layout_marginStart="29dp"
-            android:layout_toEndOf="@+id/textView"
-            android:layout_toRightOf="@+id/textView"
+            android:layout_marginLeft="50sp"
             android:background="@drawable/btn_green"
             android:text="Start" />
 
@@ -84,7 +81,9 @@
         android:rotation="-40"
         app:srcCompat="@drawable/tri_white"
         android:layout_marginLeft="30sp"
-        android:layout_marginTop="400sp"/>
+        android:layout_marginTop="500sp"
+
+        />
 
     <ImageButton
         android:id="@+id/target1"
@@ -96,19 +95,19 @@
         android:src="@drawable/white_ball"
         app:srcCompat="@drawable/white_ball"
         android:layout_marginLeft="40sp"
-        android:layout_marginTop="280sp"
+        android:layout_marginTop="350sp"
        />
 
     <ImageButton
         android:id="@+id/target4"
         android:layout_width="70sp"
         android:layout_height="70sp"
-        android:background="@android:color/white"
-        android:rotation="40"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/white_tria"
         android:layout_marginLeft="200sp"
-        android:layout_marginTop="370sp"/>
+        android:layout_marginTop="500sp"
+        android:background="@android:color/white"
+        android:rotation="80"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/white_tria" />
 
     <ImageButton
         android:id="@+id/target2"
@@ -118,7 +117,7 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/white_star"
         android:layout_marginLeft="220sp"
-        android:layout_marginTop="280sp"/>
+        android:layout_marginTop="350sp"/>
 
     <ImageButton
         android:id="@+id/image1"
@@ -139,6 +138,7 @@
             app:srcCompat="@drawable/star"
             android:layout_marginLeft="80sp"
             android:layout_marginTop="140sp"
+
            />
 
 

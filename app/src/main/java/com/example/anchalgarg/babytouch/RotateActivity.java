@@ -1,10 +1,15 @@
 package com.example.anchalgarg.babytouch;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -16,9 +21,11 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -59,11 +66,58 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
     private float oldDist = 1f;
     private float d = 0f;
     private float newRot = 0f;
+    Boolean[] flags = {false,false,false,false,false,false,false,false};
+    final int[][] positions=new int[4][4];
+    final Handler customHandler=new Handler();
+    TextView mStopWatch;
+    WinningFragment frag = new WinningFragment();
+    FrameLayout fr ;
+    FragmentManager mananger;
+    FragmentTransaction trans;
+
+    Boolean rot_allowed_2 = false;
+    Boolean rot_allowed_3 = false;
+    Boolean rot_allowed_4 = false;
+    Runnable updateTimerThred=new Runnable() {
+        @Override
+        public void run() {
+
+            time= SystemClock.uptimeMillis()-starttime;
+            updateTime=timeSwap+time;
+            secs=(int)(updateTime/1000);
+            min=secs/60;
+            secs%=60;
+            mStopWatch.setText(""+min+":"+String.format("%2d",secs));
+            customHandler.postDelayed(this,0);
+            if(min>=3)
+            {
+
+                mTimeUp.start();
+                mStartStop.setText("START");
+                t=0;
+                mMenu.setVisibility(View.VISIBLE);
+                time=0;
+                timeSwap+=time;
+                customHandler.removeCallbacks(updateTimerThred);
+
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rotate);
+
+        mananger=getSupportFragmentManager();
+        fr = (FrameLayout) findViewById(R.id.fragment_container);
+
+        mtada=MediaPlayer.create(RotateActivity.this,R.raw.tada);
+        mStopWatch=(TextView)findViewById(R.id.stopWatch);
+
+        mMenu=(Button)findViewById(R.id.menuBtn);
+        mTimeUp= MediaPlayer.create(RotateActivity.this,R.raw.timeup);
+        mStartStop=(Button)findViewById(R.id.strtStop);
         mDrag1=(ImageButton)findViewById(R.id.image1);
         mDrop1=(ImageButton)findViewById(R.id.target1);
         mDrag2=(ImageButton)findViewById(R.id.image2);
@@ -78,75 +132,113 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
         layoutParams.bottomMargin = -250;
         layoutParams.rightMargin = -250;
 
-        im_move_zoom_rotate=(ImageView)findViewById(R.id.image1);
-        // im_move_zoom_rotate.setLayoutParams(layoutParams);
-        im_move_zoom_rotate.setOnTouchListener(new View.OnTouchListener() {
 
-            RelativeLayout.LayoutParams parms;
-            int startwidth;
-            int startheight;
-            float dx = 0, dy = 0, x = 0, y = 0;
-            float angle = 0;
-
+        mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final ImageView view = (ImageView) v;
+            public void onClick(View v) {
+                if(t==0){
 
-                ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
+                    flags[1] = true;
 
-                        parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                        startwidth = parms.width;
-                        startheight = parms.height;
-                        dx = event.getRawX() - parms.leftMargin;
-                        dy = event.getRawY() - parms.topMargin;
-                        mode = DRAG;
-                        break;
+                    positions[0][0]=mDrop1.getLeft();
+                    positions[0][1]=mDrop1.getTop();
+                    positions[0][2]=mDrop1.getWidth()+positions[0][0];
+                    positions[0][3]=mDrop1.getHeight()+positions[0][1];
+                    positions[1][0]=mDrop2.getLeft();
+                    positions[1][1]=mDrop2.getTop();
+                    positions[1][2]=mDrop2.getWidth()+positions[1][0];
+                    positions[1][3]=mDrop2.getHeight()+positions[1][1];
+                    positions[2][0]=mDrop3.getLeft();
+                    positions[2][1]=mDrop3.getTop();
+                    positions[2][2]=mDrop3.getWidth()+positions[2][0];
+                    positions[2][3]=mDrop3.getHeight()+positions[2][1];
+                    positions[3][0]=mDrop4.getLeft();
+                    positions[3][1]=mDrop4.getTop();
+                    positions[3][2]=mDrop4.getWidth()+positions[3][0];
+                    positions[3][3]=mDrop4.getHeight()+positions[3][1];
 
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        oldDist = spacing(event);
-                        if (oldDist > 10f) {
-                            mode = ZOOM;
-                        }
 
-                         d = rotation(event);
+                    im_move_zoom_rotate=(ImageView)findViewById(R.id.image1);
+                    // im_move_zoom_rotate.setLayoutParams(layoutParams);
+                    im_move_zoom_rotate.setOnTouchListener(new View.OnTouchListener() {
 
-                        break;
-                    case MotionEvent.ACTION_UP:
+                        RelativeLayout.LayoutParams parms;
+                        int startwidth;
+                        int startheight;
+                        float dx = 0, dy = 0, x = 0, y = 0;
+                        float angle = 0;
 
-                        break;
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            final ImageView view = (ImageView) v;
 
-                    case MotionEvent.ACTION_POINTER_UP:
-                        mode = NONE;
+                            ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
+                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                                case MotionEvent.ACTION_DOWN:
 
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (mode == DRAG) {
+                                    parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                                    startwidth = parms.width;
+                                    startheight = parms.height;
+                                    dx = event.getRawX() - parms.leftMargin;
+                                    dy = event.getRawY() - parms.topMargin;
+                                    mode = DRAG;
+                                    break;
 
-                            x = event.getRawX();
-                            y = event.getRawY();
+                                case MotionEvent.ACTION_POINTER_DOWN:
+                                    oldDist = spacing(event);
+                                    if (oldDist > 10f) {
+                                        mode = ZOOM;
+                                    }
 
-                            parms.leftMargin = (int) (x - dx);
-                            parms.topMargin = (int) (y - dy);
+                                    d = rotation(event);
 
-                            parms.rightMargin = 0;
-                            parms.bottomMargin = 0;
-                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                    break;
+                                case MotionEvent.ACTION_UP:
 
-                            view.setLayoutParams(parms);
+                                    break;
 
-                        } else if (mode == ZOOM) {
+                                case MotionEvent.ACTION_POINTER_UP:
+                                    mode = NONE;
 
-                            if (event.getPointerCount() == 2) {
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    if (mode == DRAG) {
 
-                                newRot = rotation(event);
-                                float r = newRot - d;
-                                angle = r;
+                                        x = event.getRawX();
+                                        y = event.getRawY();
+                                        Log.d("ABAAO",""+x+" "+y);
+                                        if(x>=positions[0][0]&&y>=positions[0][1]&&x<=positions[0][2]&&y<=positions[0][3]) {
+                                            Log.d("HELLO__", "___");
+                                            //mDrop1.setImageResource(R.drawable.red__ball);
+                                            //mDrop1.setLayoutParams(
+                                            //        new RelativeLayout.LayoutParams(mDrag1.getLayoutParams()));
+                                            //mDrop1.setVisibility(View.INVISIBLE);
+                                            flags[0] = true;
+                                            check();
+                                        }else{
+                                            flags[0] = false;
+                                        }
 
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                        parms.leftMargin = (int) (x - dx);
+                                        parms.topMargin = (int) (y - dy);
+
+                                        parms.rightMargin = 0;
+                                        parms.bottomMargin = 0;
+                                        parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                        parms.bottomMargin = parms.topMargin + (10 * parms.height);
+
+                                        view.setLayoutParams(parms);
+
+                                    } else if (mode == ZOOM) {
+
+                                        if (event.getPointerCount() == 2) {
+
+                                            newRot = rotation(event);
+                                            float r = newRot - d;
+                                            angle = r;
+
+                                            x = event.getRawX();
+                                            y = event.getRawY();
 
 //                                float newDist = spacing(event);
 //                                if (newDist > 10f) {
@@ -159,103 +251,124 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
 //                                    }
 //                                }
 
-                                  view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+                                            view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                            x = event.getRawX();
+                                            y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx));// + scalediff
-                                parms.topMargin = (int) ((y - dy));
+                                            parms.leftMargin = (int) ((x - dx));// + scalediff
+                                            parms.topMargin = (int) ((y - dy));
 
-                                parms.rightMargin = 0;
-                                parms.bottomMargin = 0;
-                                parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                                parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                            parms.rightMargin = 0;
+                                            parms.bottomMargin = 0;
+                                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
-                                view.setLayoutParams(parms);
+                                            view.setLayoutParams(parms);
 
 
+                                        }
+                                    }
+                                    break;
                             }
+
+                            return true;
+
                         }
-                        break;
-                }
-
-                return true;
-
-            }
-        });
+                    });
 
 
 
-        //im_move_zoom_rotate=(ImageView)findViewById(R.id.image1);
-        // im_move_zoom_rotate.setLayoutParams(layoutParams);
-        mDrag2.setOnTouchListener(new View.OnTouchListener() {
+                    //im_move_zoom_rotate=(ImageView)findViewById(R.id.image1);
+                    // im_move_zoom_rotate.setLayoutParams(layoutParams);
+                    mDrag2.setOnTouchListener(new View.OnTouchListener() {
 
-            RelativeLayout.LayoutParams parms;
-            int startwidth;
-            int startheight;
-            float dx = 0, dy = 0, x = 0, y = 0;
-            float angle = 0;
+                        RelativeLayout.LayoutParams parms;
+                        int startwidth;
+                        int startheight;
+                        float dx = 0, dy = 0, x = 0, y = 0;
+                        float angle = 0;
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final ImageView view = (ImageView) v;
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            final ImageView view = (ImageView) v;
 
-                ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
+                            ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
+                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                                case MotionEvent.ACTION_DOWN:
 
-                        parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                        startwidth = parms.width;
-                        startheight = parms.height;
-                        dx = event.getRawX() - parms.leftMargin;
-                        dy = event.getRawY() - parms.topMargin;
-                        mode = DRAG;
-                        break;
+                                    parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                                    startwidth = parms.width;
+                                    startheight = parms.height;
+                                    dx = event.getRawX() - parms.leftMargin;
+                                    dy = event.getRawY() - parms.topMargin;
+                                    mode = DRAG;
+                                    break;
 
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        oldDist = spacing(event);
-                        if (oldDist > 10f) {
-                            mode = ZOOM;
-                        }
+                                case MotionEvent.ACTION_POINTER_DOWN:
+                                    oldDist = spacing(event);
+                                    if (oldDist > 10f) {
+                                        mode = ZOOM;
+                                    }
 
-                        d = rotation(event);
+                                    d = rotation(event);
 
-                        break;
-                    case MotionEvent.ACTION_UP:
+                                    break;
+                                case MotionEvent.ACTION_UP:
 
-                        break;
+                                    break;
 
-                    case MotionEvent.ACTION_POINTER_UP:
-                        mode = NONE;
+                                case MotionEvent.ACTION_POINTER_UP:
+                                    mode = NONE;
 
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (mode == DRAG) {
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    if (mode == DRAG) {
+                                        x = event.getRawX();
+                                        y = event.getRawY();
+                                        if(x>=positions[1][0]&&y>=positions[1][1]&&x<=positions[1][2]&&y<=positions[1][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            flags[2] = true;
+                                            check();
 
-                            x = event.getRawX();
-                            y = event.getRawY();
+                                        }else{
+                                            flags[2]= false;
+                                        }
 
-                            parms.leftMargin = (int) (x - dx);
-                            parms.topMargin = (int) (y - dy);
+                                        parms.leftMargin = (int) (x - dx);
+                                        parms.topMargin = (int) (y - dy);
 
-                            parms.rightMargin = 0;
-                            parms.bottomMargin = 0;
-                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                        parms.rightMargin = 0;
+                                        parms.bottomMargin = 0;
+                                        parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                        parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
-                            view.setLayoutParams(parms);
+                                        view.setLayoutParams(parms);
 
-                        } else if (mode == ZOOM) {
+                                    } else if (mode == ZOOM) {
 
-                            if (event.getPointerCount() == 2) {
+                                        if (event.getPointerCount() == 2) {
 
-                                newRot = rotation(event);
-                                float r = newRot - d;
-                                angle = r;
+                                            newRot = rotation(event);
+                                            float r = newRot - d;
+                                            angle = r;
 
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                            Log.d("2_d","" + d);
+
+                                            if(d > - 50 && d < -30)
+                                                flags[3] = true;
+                                            if(flags[3] && !rot_allowed_2) {
+                                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+                                                rot_allowed_2 = true;
+                                                check();
+                                            }
+
+                                            if(!rot_allowed_2)
+                                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+
+                                                x = event.getRawX();
+                                            y = event.getRawY();
 
 //                                float newDist = spacing(event);
 //                                if (newDist > 10f) {
@@ -268,99 +381,121 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
 //                                    }
 //                                }
 
-                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
-
-                                x = event.getRawX();
-                                y = event.getRawY();
-
-                                parms.leftMargin = (int) ((x - dx) );
-                                parms.topMargin = (int) ((y - dy) );
-
-                                parms.rightMargin = 0;
-                                parms.bottomMargin = 0;
-                                parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                                parms.bottomMargin = parms.topMargin + (10 * parms.height);
-
-                                view.setLayoutParams(parms);
 
 
+                                            x = event.getRawX();
+                                            y = event.getRawY();
+
+                                            parms.leftMargin = (int) ((x - dx) );
+                                            parms.topMargin = (int) ((y - dy) );
+
+                                            parms.rightMargin = 0;
+                                            parms.bottomMargin = 0;
+                                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
+
+                                            view.setLayoutParams(parms);
+
+
+                                        }
+                                    }
+                                    break;
                             }
+
+                            return true;
+
                         }
-                        break;
-                }
+                    });
 
-                return true;
+                    mDrag4.setOnTouchListener(new View.OnTouchListener() {
 
-            }
-        });
+                        RelativeLayout.LayoutParams parms;
+                        int startwidth;
+                        int startheight;
+                        float dx = 0, dy = 0, x = 0, y = 0;
+                        float angle = 0;
 
-        mDrag4.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            final ImageView view = (ImageView) v;
 
-            RelativeLayout.LayoutParams parms;
-            int startwidth;
-            int startheight;
-            float dx = 0, dy = 0, x = 0, y = 0;
-            float angle = 0;
+                            ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
+                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                                case MotionEvent.ACTION_DOWN:
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final ImageView view = (ImageView) v;
+                                    parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                                    startwidth = parms.width;
+                                    startheight = parms.height;
+                                    dx = event.getRawX() - parms.leftMargin;
+                                    dy = event.getRawY() - parms.topMargin;
+                                    mode = DRAG;
+                                    break;
 
-                ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
+                                case MotionEvent.ACTION_POINTER_DOWN:
+                                    oldDist = spacing(event);
+                                    if (oldDist > 10f) {
+                                        mode = ZOOM;
+                                    }
 
-                        parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                        startwidth = parms.width;
-                        startheight = parms.height;
-                        dx = event.getRawX() - parms.leftMargin;
-                        dy = event.getRawY() - parms.topMargin;
-                        mode = DRAG;
-                        break;
+                                    d = rotation(event);
 
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        oldDist = spacing(event);
-                        if (oldDist > 10f) {
-                            mode = ZOOM;
-                        }
+                                    break;
+                                case MotionEvent.ACTION_UP:
 
-                        d = rotation(event);
+                                    break;
 
-                        break;
-                    case MotionEvent.ACTION_UP:
+                                case MotionEvent.ACTION_POINTER_UP:
+                                    mode = NONE;
 
-                        break;
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    if (mode == DRAG) {
 
-                    case MotionEvent.ACTION_POINTER_UP:
-                        mode = NONE;
+                                        x = event.getRawX();
+                                        y = event.getRawY();
 
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (mode == DRAG) {
+                                        if(x>=positions[3][0] -10 &&y>=positions[3][1] && x<= 10 + positions[3][2]  &&y<= positions[3][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            flags[6] = true;
+                                            Log.d("2_inside","inside  " + flags[7]);
+                                            check();
+                                        }else{
+                                            Log.d("2_outside","outside  " + flags[7]);
+                                            flags[6]= false;
+                                        }
 
-                            x = event.getRawX();
-                            y = event.getRawY();
+                                        parms.leftMargin = (int) (x - dx);
+                                        parms.topMargin = (int) (y - dy);
 
-                            parms.leftMargin = (int) (x - dx);
-                            parms.topMargin = (int) (y - dy);
+                                        parms.rightMargin = 0;
+                                        parms.bottomMargin = 0;
+                                        parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                        parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
-                            parms.rightMargin = 0;
-                            parms.bottomMargin = 0;
-                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                        view.setLayoutParams(parms);
 
-                            view.setLayoutParams(parms);
+                                    } else if (mode == ZOOM) {
 
-                        } else if (mode == ZOOM) {
+                                        if (event.getPointerCount() == 2) {
 
-                            if (event.getPointerCount() == 2) {
+                                            newRot = rotation(event);
+                                            float r = newRot - d;
+                                            angle = r;
 
-                                newRot = rotation(event);
-                                float r = newRot - d;
-                                angle = r;
+                                            Log.d("4_d","" + d);
+                                            if(d >-65 && d < -40)
+                                                flags[7] = true;
+                                            if(flags[7] && !rot_allowed_4) {
+                                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+                                                rot_allowed_4 = true;
+                                                check();
+                                            }
+                                            if(!rot_allowed_4)
+                                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                            x = event.getRawX();
+                                            y = event.getRawY();
 
 //                                float newDist = spacing(event);
 //                                if (newDist > 10f) {
@@ -373,99 +508,112 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
 //                                    }
 //                                }
 
-                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+                                          //  view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                            x = event.getRawX();
+                                            y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx) );
-                                parms.topMargin = (int) ((y - dy) );
+                                            parms.leftMargin = (int) ((x - dx) );
+                                            parms.topMargin = (int) ((y - dy) );
 
-                                parms.rightMargin = 0;
-                                parms.bottomMargin = 0;
-                                parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                                parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                            parms.rightMargin = 0;
+                                            parms.bottomMargin = 0;
+                                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
-                                view.setLayoutParams(parms);
+                                            view.setLayoutParams(parms);
 
 
+                                        }
+                                    }
+                                    break;
                             }
+
+                            return true;
+
                         }
-                        break;
-                }
+                    });
 
-                return true;
+                    mDrag3.setOnTouchListener(new View.OnTouchListener() {
 
-            }
-        });
+                        RelativeLayout.LayoutParams parms;
+                        int startwidth;
+                        int startheight;
+                        float dx = 0, dy = 0, x = 0, y = 0;
+                        float angle = 0;
 
-        mDrag3.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            final ImageView view = (ImageView) v;
 
-            RelativeLayout.LayoutParams parms;
-            int startwidth;
-            int startheight;
-            float dx = 0, dy = 0, x = 0, y = 0;
-            float angle = 0;
+                            ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
+                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                                case MotionEvent.ACTION_DOWN:
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final ImageView view = (ImageView) v;
+                                    parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                                    startwidth = parms.width;
+                                    startheight = parms.height;
+                                    dx = event.getRawX() - parms.leftMargin;
+                                    dy = event.getRawY() - parms.topMargin;
+                                    mode = DRAG;
+                                    break;
 
-                ((BitmapDrawable) view.getDrawable()).setAntiAlias(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
+                                case MotionEvent.ACTION_POINTER_DOWN:
+                                    oldDist = spacing(event);
+                                    if (oldDist > 10f) {
+                                        mode = ZOOM;
+                                    }
 
-                        parms = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                        startwidth = parms.width;
-                        startheight = parms.height;
-                        dx = event.getRawX() - parms.leftMargin;
-                        dy = event.getRawY() - parms.topMargin;
-                        mode = DRAG;
-                        break;
+                                    d = rotation(event);
 
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        oldDist = spacing(event);
-                        if (oldDist > 10f) {
-                            mode = ZOOM;
-                        }
+                                    break;
+                                case MotionEvent.ACTION_UP:
 
-                        d = rotation(event);
+                                    break;
 
-                        break;
-                    case MotionEvent.ACTION_UP:
+                                case MotionEvent.ACTION_POINTER_UP:
+                                    mode = NONE;
 
-                        break;
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    if (mode == DRAG) {
 
-                    case MotionEvent.ACTION_POINTER_UP:
-                        mode = NONE;
+                                        x = event.getRawX();
+                                        y = event.getRawY();
 
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (mode == DRAG) {
+                                        if(x>=positions[2][0] -10 &&y>=positions[2][1] &&x<=positions[2][2] +10 &&y<=10 + positions[2][3])
+                                        {
+                                            Log.d("HELLO__","___");
+                                            flags[4] = true;
+                                            Log.d("3_inside","" + flags[5]);
+                                            check();
 
-                            x = event.getRawX();
-                            y = event.getRawY();
+                                        }else{
+                                            Log.d("3_outside","" + flags[5]);
+                                            flags[4] = false;
+                                        }
 
-                            parms.leftMargin = (int) (x - dx);
-                            parms.topMargin = (int) (y - dy);
+                                        parms.leftMargin = (int) (x - dx);
+                                        parms.topMargin = (int) (y - dy);
 
-                            parms.rightMargin = 0;
-                            parms.bottomMargin = 0;
-                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                        parms.rightMargin = 0;
+                                        parms.bottomMargin = 0;
+                                        parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                        parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
-                            view.setLayoutParams(parms);
+                                        view.setLayoutParams(parms);
 
-                        } else if (mode == ZOOM) {
+                                    } else if (mode == ZOOM) {
 
-                            if (event.getPointerCount() == 2) {
-
-                                newRot = rotation(event);
-                                float r = newRot - d;
-                                angle = r;
-
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                        if (event.getPointerCount() == 2) {
+                                            Log.d("YES","__--");
+                                            newRot = rotation(event);
+                                            float r = newRot - d;
+                                            angle = r;
+                                            Log.d("3_d" , "" + d);
+                                            Log.d("3_newRot" , "" + newRot);
+                                            x = event.getRawX();
+                                            y = event.getRawY();
 
 //                                float newDist = spacing(event);
 //                                if (newDist > 10f) {
@@ -478,37 +626,78 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
 //                                    }
 //                                }
 
-                                 view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+                                            Log.d("3_angle" , "" +angle);
+                                            if(d > -50 && d < -20){
+                                                flags[5] = true;
+                                                Log.d("3_offo","" + rot_allowed_3);
+                                            }
+                                            if(flags[5] && !rot_allowed_3) {
+                                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
+                                                rot_allowed_3 = true;
+                                                Log.d("3_rot","rotation_achieved"  + flags[4]);
+                                                check();
+                                            }
+                                            if(!rot_allowed_3)
+                                                view.animate().rotationBy(angle).setDuration(0).setInterpolator(new LinearInterpolator()).start();
 
-                                x = event.getRawX();
-                                y = event.getRawY();
+                                            x = event.getRawX();
+                                            y = event.getRawY();
 
-                                parms.leftMargin = (int) ((x - dx));
-                                parms.topMargin = (int) ((y - dy));
+                                            parms.leftMargin = (int) ((x - dx));
+                                            parms.topMargin = (int) ((y - dy));
 
-                                parms.rightMargin = 0;
-                                parms.bottomMargin = 0;
-                                parms.rightMargin = parms.leftMargin + (5 * parms.width);
-                                parms.bottomMargin = parms.topMargin + (10 * parms.height);
+                                            parms.rightMargin = 0;
+                                            parms.bottomMargin = 0;
+                                            parms.rightMargin = parms.leftMargin + (5 * parms.width);
+                                            parms.bottomMargin = parms.topMargin + (10 * parms.height);
 
-                                view.setLayoutParams(parms);
+                                            view.setLayoutParams(parms);
 
 
+                                        }
+                                    }
+                                    break;
                             }
+
+                            return true;
+
                         }
-                        break;
+                    });
+
+                    mStartStop.setText("STOP");
+                    mMenu.setVisibility(View.INVISIBLE);
+                    starttime= SystemClock.uptimeMillis();
+                    customHandler.postDelayed(updateTimerThred,0);
+                    t=1;
+                }else
+                {
+                    mDrag1.setOnTouchListener(null);
+                    mDrag2.setOnTouchListener(null);
+                    mDrag3.setOnTouchListener(null);
+                    mDrag4.setOnTouchListener(null);
+                    mStartStop.setText("START");
+
+                    t=0;
+                    mMenu.setVisibility(View.VISIBLE);
+                    time=0;
+                    timeSwap+=time;
+                    customHandler.removeCallbacks(updateTimerThred);
                 }
-
-                return true;
-
             }
         });
-
 
         mMenu=(Button)findViewById(R.id.menuBtn);
+        mMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent TapIntent=new Intent(RotateActivity.this,Main2Activity.class);
+                TapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(TapIntent);
+
+            }
+        });
         mTimeUp= MediaPlayer.create(RotateActivity.this,R.raw.timeup);
         mStartStop=(Button)findViewById(R.id.strtStop);
-
        /* mDrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -580,6 +769,7 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
         return false;
     }
 
+
     /*public class MyScaleGestures implements View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
         private View view;
         private ScaleGestureDetector gestureScale;
@@ -636,7 +826,59 @@ public class RotateActivity extends AppCompatActivity implements View.OnTouchLis
         double radians = Math.atan2(delta_y, delta_x);
         return (float) Math.toDegrees(radians);
     }
+    private void check(){
 
+        if(flags[0] && flags[1]){
+
+            // myImgView.setImageDrawable(getResources().getDrawable(R.drawable.monkey, getApplicationContext().getTheme()));
+            mDrop1.setImageResource(R.drawable.red__ball);
+//            mDrag1.setLayoutParams(
+//                    new RelativeLayout.LayoutParams(mDrop1.getLayoutParams()));
+
+//            mDrop1.setLayoutParams(
+//                    new RelativeLayout.LayoutParams(mDrop1.getLayoutParams()));
+            //mDrop1.setX(x);
+            //mDrop1.setY(y);
+            //       mDrop1.setVisibility(View.INVISIBLE);
+            //mDrag1.setVisibility(View.INVISIBLE);
+            mDrag1.setOnTouchListener(null);
+            mDrag1.setVisibility(View.INVISIBLE);
+        }
+
+        if(flags[2] && flags[3]){
+            mDrop2.setImageResource(R.drawable.star);
+            mDrag2.setOnTouchListener(null);
+            mDrag2.setVisibility(View.INVISIBLE);
+        }
+
+        if(flags[4] && flags[5]){
+            mDrop3.setImageResource(R.drawable.rect_red);
+            mDrag3.setOnTouchListener(null);
+            mDrag3.setVisibility(View.INVISIBLE);
+        }
+
+        if(flags[6] && flags[7]){
+            mDrop4.setImageResource(R.drawable.tri_red);
+//            mDrop4.setLayoutParams(
+//                    new RelativeLayout.LayoutParams(mDrop4.getLayoutParams()));
+            Log.d("2_","should work");
+            mDrag4.setVisibility(View.INVISIBLE);
+            mDrag4.setOnTouchListener(null);
+        }
+        Boolean flag = true;
+        for(int i = 0;i<7;i++)
+            if(!flags[i])
+                flag = false;
+
+        if(flag){
+            trans = mananger.beginTransaction();
+            trans.add(R.id.fragment_container, frag);
+            trans.commit();
+            mStartStop.setVisibility(View.INVISIBLE);
+            mMenu.setVisibility(View.INVISIBLE);
+        }
+
+    }
 
 
 }

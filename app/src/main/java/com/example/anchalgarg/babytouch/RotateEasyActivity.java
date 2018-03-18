@@ -1,6 +1,5 @@
 package com.example.anchalgarg.babytouch;
 
-import android.app.usage.UsageEvents;
 import android.content.ClipData;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -15,11 +14,10 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class DragAndDropActivity extends AppCompatActivity {
+public class RotateEasyActivity extends AppCompatActivity {
     ImageButton mDrag1;
     ImageButton mDrop1;
     ImageButton mDrag2;
@@ -76,10 +74,11 @@ public class DragAndDropActivity extends AppCompatActivity {
     TextView mStopWatch;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drag_and_drop);
+        setContentView(R.layout.activity_rotate_easy);
 
         mDrag1=(ImageButton)findViewById(R.id.image1);
         mDrop1=(ImageButton)findViewById(R.id.target1);
@@ -91,14 +90,14 @@ public class DragAndDropActivity extends AppCompatActivity {
         mDrop4=(ImageButton)findViewById(R.id.target4);
 
         mMenu=(Button)findViewById(R.id.menuBtn);
-        mTimeUp=MediaPlayer.create(DragAndDropActivity.this,R.raw.timeup);
+        mTimeUp=MediaPlayer.create(RotateEasyActivity.this,R.raw.timeup);
         mStartStop=(Button)findViewById(R.id.strtStop);
         mananger=getSupportFragmentManager();
         fr = (FrameLayout) findViewById(R.id.fragment_container);
 
 
 
-        mtada=MediaPlayer.create(DragAndDropActivity.this,R.raw.tada);
+        mtada=MediaPlayer.create(RotateEasyActivity.this,R.raw.tada);
         mStopWatch=(TextView)findViewById(R.id.stopWatch);
         final int[] x = {0};
 
@@ -126,7 +125,34 @@ public class DragAndDropActivity extends AppCompatActivity {
                     mDrop3.setImageResource(R.drawable.tri_white);
                     mDrop4.setImageResource(R.drawable.white_tria);
 
+                    mDrag1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag1.setRotation(mDrag1.getRotation() -50);
 
+                        }
+                    });
+                    mDrag2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag2.setRotation(mDrag2.getRotation() +20);
+
+                        }
+                    });
+                    mDrag3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag3.setRotation(mDrag3.getRotation() -40);
+
+                        }
+                    });
+                    mDrag4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag4.setRotation(mDrag4.getRotation() +80);
+
+                        }
+                    });
                     Log.d("aagya","-____--__");
 
 
@@ -169,15 +195,13 @@ public class DragAndDropActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent TapIntent=new Intent(DragAndDropActivity.this,Main2Activity.class);
+                Intent TapIntent=new Intent(RotateEasyActivity.this,Main2Activity.class);
                 TapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(TapIntent);
 
             }
         });
-
     }
-
     View.OnLongClickListener longClickListener=new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
@@ -252,7 +276,4 @@ public class DragAndDropActivity extends AppCompatActivity {
             return true;
         }
     };
-
-
-
 }

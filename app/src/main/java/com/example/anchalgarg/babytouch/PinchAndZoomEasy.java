@@ -1,8 +1,10 @@
 package com.example.anchalgarg.babytouch;
 
-import android.app.usage.UsageEvents;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -10,16 +12,26 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class DragAndDropActivity extends AppCompatActivity {
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class PinchAndZoomEasy extends AppCompatActivity {
+
     ImageButton mDrag1;
     ImageButton mDrop1;
     ImageButton mDrag2;
@@ -32,6 +44,7 @@ public class DragAndDropActivity extends AppCompatActivity {
     FrameLayout fr ;
     FragmentManager mananger;
     FragmentTransaction trans;
+    Boolean inScale=false;
 
     Button mMenu;
     int[] m = {0};
@@ -75,11 +88,10 @@ public class DragAndDropActivity extends AppCompatActivity {
 
     TextView mStopWatch;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drag_and_drop);
+        setContentView(R.layout.activity_pinch_and_zoom_easy);
 
         mDrag1=(ImageButton)findViewById(R.id.image1);
         mDrop1=(ImageButton)findViewById(R.id.target1);
@@ -91,26 +103,18 @@ public class DragAndDropActivity extends AppCompatActivity {
         mDrop4=(ImageButton)findViewById(R.id.target4);
 
         mMenu=(Button)findViewById(R.id.menuBtn);
-        mTimeUp=MediaPlayer.create(DragAndDropActivity.this,R.raw.timeup);
+        mTimeUp=MediaPlayer.create(PinchAndZoomEasy.this,R.raw.timeup);
         mStartStop=(Button)findViewById(R.id.strtStop);
         mananger=getSupportFragmentManager();
         fr = (FrameLayout) findViewById(R.id.fragment_container);
 
 
 
-        mtada=MediaPlayer.create(DragAndDropActivity.this,R.raw.tada);
+        mtada=MediaPlayer.create(PinchAndZoomEasy.this,R.raw.tada);
         mStopWatch=(TextView)findViewById(R.id.stopWatch);
         final int[] x = {0};
 
-        mDrag1.setOnLongClickListener(longClickListener);
-        mDrag2.setOnLongClickListener(longClickListener);
-        mDrag3.setOnLongClickListener(longClickListener);
-        mDrag4.setOnLongClickListener(longClickListener);
 
-        mDrop1.setOnDragListener(dragListener);
-        mDrop2.setOnDragListener(dragListener);
-        mDrop3.setOnDragListener(dragListener);
-        mDrop4.setOnDragListener(dragListener);
 
         mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,8 +130,47 @@ public class DragAndDropActivity extends AppCompatActivity {
                     mDrop3.setImageResource(R.drawable.tri_white);
                     mDrop4.setImageResource(R.drawable.white_tria);
 
+                    mDrag1.setOnTouchListener(new MyScaleGestures(mDrag1.getContext()));
+
+                    mDrag1.setOnLongClickListener(longClickListener);
+                    mDrag2.setOnLongClickListener(longClickListener);
+                    mDrag3.setOnLongClickListener(longClickListener);
+                    mDrag4.setOnLongClickListener(longClickListener);
+
+                    mDrop1.setOnDragListener(dragListener);
+                    mDrop2.setOnDragListener(dragListener);
+                    mDrop3.setOnDragListener(dragListener);
+                    mDrop4.setOnDragListener(dragListener);
 
                     Log.d("aagya","-____--__");
+                    /*mDrag1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag1.setScaleX(2);
+                            mDrag1.setScaleY(2);
+                        }
+                    });*/
+                    mDrag2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag2.setScaleX(2);
+                            mDrag2.setScaleY(2);
+                        }
+                    });
+                    mDrag3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag3.setScaleX((float) 0.6);
+                            mDrag3.setScaleY((float) 0.6);
+                        }
+                    });
+                    mDrag4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDrag4.setScaleX((float) 0.5);
+                            mDrag4.setScaleY((float) 0.5);
+                        }
+                    });
 
 
 
@@ -150,6 +193,15 @@ public class DragAndDropActivity extends AppCompatActivity {
                     time=0;
                     timeSwap+=time;
                     customHandler.removeCallbacks(updateTimerThred);
+                    mDrag1.setOnLongClickListener(null);
+                    mDrag2.setOnLongClickListener(null);
+                    mDrag3.setOnLongClickListener(null);
+                    mDrag4.setOnLongClickListener(null);
+
+                    mDrop1.setOnDragListener(null);
+                    mDrop2.setOnDragListener(null);
+                    mDrop3.setOnDragListener(null);
+                    mDrop4.setOnDragListener(null);
                 }
             }
         });
@@ -169,14 +221,128 @@ public class DragAndDropActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent TapIntent=new Intent(DragAndDropActivity.this,Main2Activity.class);
+                Intent TapIntent=new Intent(PinchAndZoomEasy.this,Main2Activity.class);
                 TapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(TapIntent);
 
             }
         });
 
+
+        }
+    public void saveImage(String path, String imgname, Bitmap image){
+        try{
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(path+imgname);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            BufferedOutputStream stream = new BufferedOutputStream(fos);
+
+            image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+            stream.flush();
+            stream.close();
+        }
+        catch(FileNotFoundException e){
+
+        }
+        catch(IOException e){
+
+        }
     }
+    int mActivePointerId;
+    public boolean onTouch(View v, MotionEvent event) {
+        mActivePointerId = event.getPointerId(0);
+
+        // ... Many touch events later...
+
+        // Use the pointer ID to find the index of the active pointer
+        // and fetch its position
+        int pointerIndex = event.findPointerIndex(mActivePointerId);
+        // Get the pointer's current position
+        float x = event.getX(pointerIndex);
+        float y = event.getY(pointerIndex);
+        Log.d("ss","ff"+x+" "+y);
+        return false;
+    }
+
+    public class MyScaleGestures implements View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
+        private View view;
+        private ScaleGestureDetector gestureScale;
+        private float scaleFactor = 1;
+
+        public MyScaleGestures(Context c){ gestureScale = new ScaleGestureDetector(c, this); }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            this.view = view;
+            gestureScale.onTouchEvent(event);
+            return true;
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= detector.getScaleFactor();
+            scaleFactor = (scaleFactor < 1 ? 1 : scaleFactor); // prevent our view from becoming too small //
+            scaleFactor = ((float)((int)(scaleFactor * 100))) / 100; // Change precision to help with jitter when user just rests their fingers //
+            view.setScaleX(scaleFactor);
+            view.setScaleY(scaleFactor);
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            inScale = true;
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) { inScale = false;
+            view.setScaleX(2);
+            view.setScaleY(2);
+        }
+    }
+
+    /*public class MyScaleGestures implements View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
+        private View view;
+        private ScaleGestureDetector gestureScale;
+        private float scaleFactor = 1;
+        Boolean inScale;
+
+        public MyScaleGestures(Context c){ gestureScale = new ScaleGestureDetector(c, this); }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            this.view = view;
+            gestureScale.onTouchEvent(event);
+            return true;
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= detector.getScaleFactor();
+            scaleFactor = (scaleFactor < 1 ? 1 : scaleFactor); // prevent our view from becoming too small //
+            scaleFactor = ((float)((int)(scaleFactor * 100))) / 100; // Change precision to help with jitter when user just rests their fingers //
+            view.setScaleX(scaleFactor);
+            view.setScaleY(scaleFactor);
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            inScale = true;
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) { inScale = false; }
+
+
+    }*/
+
 
     View.OnLongClickListener longClickListener=new View.OnLongClickListener() {
         @Override
@@ -255,4 +421,6 @@ public class DragAndDropActivity extends AppCompatActivity {
 
 
 
+
 }
+

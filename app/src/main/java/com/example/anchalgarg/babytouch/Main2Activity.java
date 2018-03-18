@@ -3,12 +3,14 @@ package com.example.anchalgarg.babytouch;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
 public class Main2Activity extends AppCompatActivity {
     GridView gdView;
+
     String []categories={"Tap","Tap on moving objects","Tap and hold","Slide","Drag and drop","Pinch and zoom","Rotate"};
     int []images={R.drawable.tap,R.drawable.taponmoving,R.drawable.tapandhold,R.drawable.slide,R.drawable.draganddrop,R.drawable.pinchandzoom,R.drawable.rotate};
     @Override
@@ -17,7 +19,10 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         gdView=(GridView)findViewById(R.id.gridView);
         CustomAdapter adapter=new CustomAdapter(this,categories,images);
-
+        String s = getIntent().getStringExtra("x");
+       // Log.d("xyzabc" ,"" + x);
+       // final boolean x = s.equalsIgnoreCase("true");
+        Log.d("XX_XXX",""+MainActivity.x1);
         gdView.setAdapter(adapter);
         gdView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,14 +58,32 @@ public class Main2Activity extends AppCompatActivity {
                         startActivity(TapIntent4);
                         break;
                     case 5:
-                        Intent TapIntent5=new Intent(Main2Activity.this,PinchAndZoomActivity.class);
-                        TapIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(TapIntent5);
+                        if(!MainActivity.x1)
+                        {
+                            Intent TapIntent5=new Intent(Main2Activity.this,PinchAndZoomActivity.class);
+                            TapIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(TapIntent5);
+                        }
+                        else
+                        {
+
+                            Intent TapIntent5=new Intent(Main2Activity.this,PinchAndZoomEasy.class);
+                            TapIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(TapIntent5);
+                        }
                         break;
                     case 6:
-                        Intent TapIntent6=new Intent(Main2Activity.this,RotateActivity.class);
-                        TapIntent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(TapIntent6);
+                        if(!MainActivity.x1) {
+                            Intent TapIntent6 = new Intent(Main2Activity.this, RotateActivity.class);
+                            TapIntent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(TapIntent6);
+                        }
+                        else
+                        {
+                            Intent TapIntent6 = new Intent(Main2Activity.this, RotateEasyActivity.class);
+                            TapIntent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(TapIntent6);
+                        }
                         break;
 
                 }

@@ -318,13 +318,6 @@ public class TapAndHoldActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
     }
 
 }

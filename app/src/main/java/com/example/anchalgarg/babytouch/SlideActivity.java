@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,9 +26,14 @@ public class SlideActivity extends AppCompatActivity {
     int min,secs;
     long timeSwap=0L;
     public int t=0;
+    WinningFragment frag = new WinningFragment();
+    FrameLayout fr ;
+    FragmentManager mananger;
+    FragmentTransaction trans;
     MediaPlayer mTimeUp=new MediaPlayer();
     MediaPlayer mtada=new MediaPlayer();
     long updateTime=0L;
+    int[] x = {0};
 
     final Handler customHandler=new Handler();
     Runnable updateTimerThred=new Runnable() {
@@ -67,14 +75,15 @@ public class SlideActivity extends AppCompatActivity {
 
         mtada=MediaPlayer.create(SlideActivity.this,R.raw.tada);
         mStopWatch=(TextView)findViewById(R.id.stopWatch);
-        final int[] x = {0};
+        mananger=getSupportFragmentManager();
+        fr = (FrameLayout) findViewById(R.id.fragment_container);
 
         final SeekBar seekBar=(SeekBar)findViewById(R.id.seekBar);
         seekBar.setProgress(0);
         seekBar.incrementProgressBy(10);
         seekBar.setMax(200);
 
-        final SeekBar seekBar1=(SeekBar)findViewById(R.id.seekBar);
+        final SeekBar seekBar1=(SeekBar)findViewById(R.id.seekBar2);
         seekBar1.setProgress(0);
         seekBar1.incrementProgressBy(10);
         seekBar1.setMax(200);
@@ -85,6 +94,10 @@ public class SlideActivity extends AppCompatActivity {
         mStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                seekBar.setProgress(0);
+                seekBar1.setProgress(0);
+                x[0]=0;
+
                 if(t==0)
                 {
                     seekBar.setEnabled(true);
@@ -92,11 +105,7 @@ public class SlideActivity extends AppCompatActivity {
                     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            if(progress>=190)
-                            {
-                                Log.d("joker","--"+progress);
-                                x[0]++;
-                            }
+
                         }
 
                         @Override
@@ -106,6 +115,21 @@ public class SlideActivity extends AppCompatActivity {
 
                         @Override
                         public void onStopTrackingTouch(SeekBar seekBar) {
+                            Log.d("HEYEE 11","--"+seekBar.getProgress());
+                            Log.d("HEYEE 11",".."+x[0]);
+                            if(seekBar.getProgress()>=190)
+                            {
+                                Log.d("HEYEE","--__"+seekBar.getProgress());
+                                x[0]++;
+                            }
+                            if(x[0]>=2)
+                            {
+                                trans = mananger.beginTransaction();
+                                trans.add(R.id.fragment_container, frag);
+                                trans.commit();
+                                mStartStop.setVisibility(View.INVISIBLE);
+                                mtada.start();
+                            }
 
                         }
                     });
@@ -115,11 +139,7 @@ public class SlideActivity extends AppCompatActivity {
                     seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            if(progress>=190)
-                            {
-                                Log.d("joker","--"+progress);
-                                x[0]++;
-                            }
+
                         }
 
                         @Override
@@ -129,6 +149,23 @@ public class SlideActivity extends AppCompatActivity {
 
                         @Override
                         public void onStopTrackingTouch(SeekBar seekBar) {
+                            Log.d("HEYEE 11","--"+seekBar.getProgress());
+                            Log.d("HEYEE 11",".."+x[0]);
+
+                            if(seekBar.getProgress()>=190)
+                            {
+                                Log.d("HEYEE","--__"+seekBar.getProgress());
+                                x[0]++;
+                            }
+
+                            if(x[0]>=2)
+                            {
+                                trans = mananger.beginTransaction();
+                                trans.add(R.id.fragment_container, frag);
+                                trans.commit();
+                                mStartStop.setVisibility(View.INVISIBLE);
+                                mtada.start();
+                            }
 
                         }
                     });

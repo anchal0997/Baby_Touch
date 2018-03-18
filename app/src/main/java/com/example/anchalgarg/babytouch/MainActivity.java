@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,8 +22,11 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
 
     private Button mPlay;
     private Button mOption;
+    public static Boolean x1=true;
     private Button mAbout;
     RelativeLayout mRelativeLayout;
+    WinningFragment frag;
+    public static Boolean x = true;
     Animation animationzoom;
    // ImageButton mredBall;
 
@@ -36,7 +40,8 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
         mAbout=(Button)findViewById(R.id.abtBtn);
        // mredBall=(ImageButton) findViewById(R.id.red_ball);
         animationzoom=  AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
-
+        frag = new WinningFragment();
+        frag.p = MainActivity.this;
       /*  mredBall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +56,8 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
             public void onClick(View v) {
 
                 Intent PlayIntent=new Intent(MainActivity.this,Main2Activity.class);
+                Log.d("xyxyxyx","" + x);
+                PlayIntent.putExtra("x", x);
                 PlayIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(PlayIntent);
             }
@@ -59,6 +66,28 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
             @Override
             public void onClick(View v) {
                 final option_frg mOptions=new option_frg();
+             //   mOptions.ma = MainActivity.this;
+                final FragmentManager mananger;
+                final FragmentTransaction[] trans = new FragmentTransaction[1];
+                mananger=getSupportFragmentManager();
+                mOptions.show(mananger,"Options");
+                mRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        trans[0] = mananger.beginTransaction();
+                        trans[0].remove(mOptions);
+                        trans[0].commit();
+                    }
+                });
+
+            }
+        });
+
+        mAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Abt_frg mOptions=new Abt_frg();
                 final FragmentManager mananger;
                 final FragmentTransaction[] trans = new FragmentTransaction[1];
                 mananger=getSupportFragmentManager();
@@ -91,4 +120,7 @@ public class MainActivity extends AppCompatActivity  implements Animation.Animat
     public void onAnimationRepeat(Animation animation) {
 
     }
+
+
+
 }

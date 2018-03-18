@@ -24,20 +24,16 @@ public class WinningFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+//        // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_winning_message, container, false);
-        mPlayAgain=(Button)view.findViewById(R.id.playAgain);
-        mPlayAgain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(p!=null)
-                    Log.d("h","");
-                   // p.refresh();
-                else
-                    Log.d("h","");
-                    //p2.refresh();
-            }
-        });
+//        mPlayAgain=(Button)view.findViewById(R.id.playAgain);
+//        mPlayAgain.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //p.play();
+//                p.onCreate(null);
+//            }
+//        });
         /*
         relativeLayout= (RelativeLayout) view.findViewById(R.id.lay);
 

@@ -27,7 +27,9 @@
         <activity
             android:name=".pratice"
             android:label="@string/title_activity_pratice"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PinchAndZoomEasy" />
+        <activity android:name=".RotateEasyActivity"></activity>
     </application>
 
 </manifest>

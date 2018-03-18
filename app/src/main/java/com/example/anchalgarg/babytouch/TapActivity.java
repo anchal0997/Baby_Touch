@@ -85,6 +85,8 @@ public class TapActivity extends AppCompatActivity {
         mRedBall3=(ImageButton)findViewById(R.id.red_ball3);
         mTimeUp=MediaPlayer.create(TapActivity.this,R.raw.timeup);
         mStartStop=(Button)findViewById(R.id.strtStop);
+        mananger=getSupportFragmentManager();
+        fr = (FrameLayout) findViewById(R.id.fragment_container);
 
         mtada=MediaPlayer.create(TapActivity.this,R.raw.tada);
         mStopWatch=(TextView)findViewById(R.id.stopWatch);
