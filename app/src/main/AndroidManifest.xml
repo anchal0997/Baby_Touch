@@ -24,10 +24,7 @@
         <activity android:name=".SlideActivity" />
         <activity android:name=".DragAndDropActivity" />
         <activity android:name=".PinchAndZoomActivity" />
-        <activity
-            android:name=".pratice"
-            android:label="@string/title_activity_pratice"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".practice"> </activity>
         <activity android:name=".PinchAndZoomEasy" />
         <activity android:name=".RotateEasyActivity"></activity>
     </application>

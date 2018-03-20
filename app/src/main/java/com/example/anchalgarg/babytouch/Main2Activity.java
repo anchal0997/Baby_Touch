@@ -67,7 +67,7 @@ public class Main2Activity extends AppCompatActivity {
                         else
                         {
 
-                            Intent TapIntent5=new Intent(Main2Activity.this,PinchAndZoomEasy.class);
+                            Intent TapIntent5=new Intent(Main2Activity.this,practice.class);
                             TapIntent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(TapIntent5);
                         }
