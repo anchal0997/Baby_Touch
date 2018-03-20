@@ -111,9 +111,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="470sp"
         android:layout_alignLeft="@+id/yes"
-        android:layout_alignStart="@+id/yes"
+
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:id="@+id/radioGroup">
@@ -122,7 +122,6 @@
             android:id="@+id/easy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView8"
             android:layout_alignEnd="@+id/textView10"
             android:layout_alignRight="@+id/textView10"
             android:text="Easy"
@@ -130,10 +129,11 @@
 
         <RadioButton
             android:id="@+id/difficult"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Difficult"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="visible" />
     </RadioGroup>
 
     <TextView
@@ -143,7 +143,7 @@
         android:text="Level"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:layout_below="@+id/textView5"
+        android:layout_marginTop="450sp"
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText" />
 
