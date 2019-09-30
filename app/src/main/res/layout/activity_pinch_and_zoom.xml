@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="350sp"
+        android:layout_height="338sp"
 
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -59,7 +59,7 @@
         android:layout_width="120sp"
         android:layout_height="120sp"
         android:layout_marginLeft="50sp"
-        android:layout_marginTop="350sp"
+        android:layout_marginTop="310sp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/white_star"
 
@@ -71,7 +71,7 @@
         android:layout_width="60sp"
         android:layout_height="60sp"
         android:layout_marginLeft="100sp"
-        android:layout_marginTop="500sp"
+        android:layout_marginTop="430sp"
         app:srcCompat="@drawable/tri_white" />
 
     <ImageButton
@@ -79,7 +79,7 @@
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:layout_marginLeft="200sp"
-        android:layout_marginTop="350sp"
+        android:layout_marginTop="310sp"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/white_ball" />
@@ -89,7 +89,7 @@
         android:layout_width="60sp"
         android:layout_height="60sp"
         android:layout_marginLeft="200sp"
-        android:layout_marginTop="500sp"
+        android:layout_marginTop="430sp"
         android:background="@android:color/white"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/white_tria" />
@@ -149,5 +149,6 @@
         android:layout_alignParentTop="true">
 
     </FrameLayout>
+
 
 </RelativeLayout>
